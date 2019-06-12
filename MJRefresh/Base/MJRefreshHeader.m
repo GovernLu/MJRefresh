@@ -90,8 +90,10 @@
             self.state = MJRefreshStatePulling;
             if (!self.isHapticTriggered) {
                 self.isHapticTriggered = YES;
-                UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
-                [generator impactOccurred];
+                if (@available(iOS 10, *)) {
+                    UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+                    [generator impactOccurred];
+                }
             }
         } else if (self.state == MJRefreshStatePulling && offsetY >= normal2pullingOffsetY) {
             // 转为普通状态
