@@ -25,16 +25,21 @@ typedef NS_ENUM(NSInteger, MJRefreshState) {
     /** 即将刷新的状态 */
     MJRefreshStateWillRefresh,
     /** 所有数据加载完毕，没有更多的数据了 */
-    MJRefreshStateNoMoreData
+    MJRefreshStateNoMoreData,
+    /** 释放展示更多 */
+    MJRefreshStateWillShowMore,
 };
 
 /** 进入刷新状态的回调 */
 typedef void (^MJRefreshComponentRefreshingBlock)(void);
 /** 开始刷新后的回调(进入刷新状态后的回调) */
-typedef void (^MJRefreshComponentbeginRefreshingCompletionBlock)(void);
+typedef void (^MJRefreshComponentBeginRefreshingCompletionBlock)(void);
 /** 结束刷新后的回调 */
 typedef void (^MJRefreshComponentEndRefreshingCompletionBlock)(void);
-
+/** 开始进入展示更多的回调 */
+typedef void (^MJRefreshComponentBeginShowMoreBlock)(void);
+/** 展开更多过程的回调 */
+typedef void (^MJRefreshComponentShowMoreCompletionBlock)(void);
 /** 刷新控件的基类 */
 @interface MJRefreshComponent : UIView
 {
@@ -61,12 +66,19 @@ typedef void (^MJRefreshComponentEndRefreshingCompletionBlock)(void);
 - (void)beginRefreshing;
 - (void)beginRefreshingWithCompletionBlock:(void (^)(void))completionBlock;
 /** 开始刷新后的回调(进入刷新状态后的回调) */
-@property (copy, nonatomic) MJRefreshComponentbeginRefreshingCompletionBlock beginRefreshingCompletionBlock;
+@property (copy, nonatomic) MJRefreshComponentBeginRefreshingCompletionBlock beginRefreshingCompletionBlock;
 /** 结束刷新的回调 */
 @property (copy, nonatomic) MJRefreshComponentEndRefreshingCompletionBlock endRefreshingCompletionBlock;
+/** 展开更多回调 */
+@property (copy, nonatomic) MJRefreshComponentShowMoreCompletionBlock showMoreCompletionBlock;
+
 /** 结束刷新状态 */
 - (void)endRefreshing;
 - (void)endRefreshingWithCompletionBlock:(void (^)(void))completionBlock;
+
+/** 结束显示展示更多 */
+- (void)endShowMore;
+
 /** 是否正在刷新 */
 @property (assign, nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
 //- (BOOL)isRefreshing;
@@ -99,6 +111,7 @@ typedef void (^MJRefreshComponentEndRefreshingCompletionBlock)(void);
 @property (assign, nonatomic, getter=isAutoChangeAlpha) BOOL autoChangeAlpha MJRefreshDeprecated("请使用automaticallyChangeAlpha属性");
 /** 根据拖拽比例自动切换透明度 */
 @property (assign, nonatomic, getter=isAutomaticallyChangeAlpha) BOOL automaticallyChangeAlpha;
+
 @end
 
 @interface UILabel(MJRefresh)

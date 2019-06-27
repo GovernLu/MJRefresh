@@ -183,6 +183,23 @@
     [self endRefreshing];
 }
 
+#pragma mark 下拉展示更多
+
+- (void)pullToShowMore{};
+
+#pragma mark 释放展示更多
+
+- (void)releaseToShowMore{};
+
+#pragma mark 结束展示更多
+
+- (void)endShowMore
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.state = MJRefreshStateIdle;
+    });
+}
+
 #pragma mark 是否正在刷新
 - (BOOL)isRefreshing
 {
